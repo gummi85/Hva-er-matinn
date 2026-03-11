@@ -1,12 +1,12 @@
 {
   "name": "Hvað er í matinn?",
   "short_name": "Matinn",
-  "description": "Local-first meal planner and pantry app prototype.",
+  "description": "Cozy local-first meal planner prototype.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ede1d0",
-  "theme_color": "#5b3a1f",
+  "background_color": "#e7d7c3",
+  "theme_color": "#5a3924",
   "icons": [
     {
       "src": "./icon-192.svg",
