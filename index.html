@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hvað er í matinn?</title>
+  <meta name="theme-color" content="#5b3a1f" />
+  <link rel="manifest" href="./manifest.json" />
+  <style>
+    :root{--wood:#5b3a1f;--wood-2:#7a5230;--paper:#f3e7d3;--paper-2:#fbf6ee;--ink:#2f241b;--muted:#7a6b5a;--line:#ddcbb3;--accent:#c97b3b;--danger:#a63f32;--card-shadow:0 8px 24px rgba(50,30,10,.10)}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#ede1d0 0%,#f6efe5 100%);color:var(--ink)}
+    .app{max-width:1100px;margin:0 auto;padding:16px 16px 88px}
+    .hero{background:linear-gradient(135deg,var(--wood),var(--wood-2));color:#fff;border-radius:26px;padding:18px;box-shadow:var(--card-shadow);margin-bottom:14px}
+    .hero-top,.row,.between{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;gap:12px;align-items:center}.logo{width:54px;height:54px;border-radius:18px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:1.5rem}
+    h1,h2,h3,p{margin:0}.sub{color:rgba(255,255,255,.82);margin-top:4px}
+    .chip{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:.86rem;margin:8px 8px 0 0}
+    .sync-badge{background:#efe4d3;color:var(--wood);padding:8px 12px;border-radius:999px;font-size:.85rem;font-weight:700}
+    .section{display:none}.section.active{display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+    .card{background:linear-gradient(180deg,var(--paper-2),var(--paper));border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:var(--card-shadow)}
+    .muted{color:var(--muted)} .spacer{height:10px}
+    button{border:none;border-radius:14px;padding:10px 13px;font-weight:800;cursor:pointer}
+    .primary{background:var(--wood);color:#fff}.secondary{background:#e8dbc8;color:var(--wood)}.accent{background:var(--accent);color:#fff}.danger{background:#f3d4cf;color:var(--danger)}
+    input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:14px;background:#fffaf3;font-size:1rem;color:var(--ink)}
+    .list-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.55);border:1px dashed #d8c3a8;border-radius:16px;padding:10px 12px;margin-top:8px}
+    .small{font-size:.9rem}.tiny{font-size:.8rem}.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+    .pill{display:inline-block;padding:4px 9px;border-radius:999px;background:#e7d7c1;color:var(--wood);font-size:.78rem;font-weight:700;margin-right:6px}
+    .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;z-index:10;background:#f8f2e9;border:1px solid var(--line);box-shadow:var(--card-shadow);border-radius:22px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:8px;max-width:950px;width:calc(100% - 20px)}
+    .nav button{background:transparent;color:var(--wood);border-radius:16px;padding:10px 8px;font-size:.85rem}.nav button.active{background:var(--wood);color:#fff}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{background:rgba(255,255,255,.4);border-radius:18px;padding:12px}.kpi strong{display:block;font-size:1.15rem}
+    .ai-card{background:linear-gradient(180deg,#fff7ed,#f7ead7)}.recipe-tags{margin-top:6px}.tag{display:inline-block;background:#efe0cb;padding:4px 8px;border-radius:999px;font-size:.76rem;margin:4px 6px 0 0}
+    .toolbar{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px}
+    .segment{display:inline-flex;background:#eadbc7;padding:4px;border-radius:16px}.segment button{padding:8px 12px;border-radius:12px;background:transparent}.segment button.active{background:var(--wood);color:#fff}
+    @media (max-width:760px){.toolbar,.kpis{grid-template-columns:1fr}.nav{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="hero-top">
+      <div class="brand">
+        <div class="logo">🍳</div>
+        <div>
+          <h1 id="heroTitle">Hvað er í matinn?</h1>
+          <p class="sub" id="heroSub">Warm, pabbaleg local-first prótótýpa með hybrid hugsun.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="sync-badge" id="syncStatus">🟢 Local first · offline ready</div>
+        <button class="secondary" onclick="toggleLanguage()"><span id="langBtn">English</span></button>
+      </div>
+    </div>
+    <div>
+      <span class="chip" id="chip1">📅 Vikuplan</span><span class="chip" id="chip2">🥫 Til heima</span><span class="chip" id="chip3">🛒 Innkaupalisti</span><span class="chip" id="chip4">🤖 Lazy mode + AI tillögur</span>
+    </div>
+  </div>
+
+  <section id="home" class="section active">
+    <div class="grid">
+      <div class="card">
+        <h2 id="homeGreeting">Sæll Gummi 👋</h2>
+        <p class="muted small" id="homePrompt">Hvað á að vera í matinn — eða bara hvað á að fá sér?</p>
+        <div class="spacer"></div>
+        <div class="kpis">
+          <div class="kpi"><span class="tiny muted" id="kpi1label">Réttir í viku</span><strong id="kpiMeals">0</strong></div>
+          <div class="kpi"><span class="tiny muted" id="kpi2label">Til heima</span><strong id="kpiPantry">0</strong></div>
+          <div class="kpi"><span class="tiny muted" id="kpi3label">Á lista</span><strong id="kpiShop">0</strong></div>
+          <div class="kpi"><span class="tiny muted" id="kpi4label">Vistaðir réttir</span><strong id="kpiRecipes">0</strong></div>
+        </div>
+        <div class="spacer"></div>
+        <div class="row">
+          <button class="primary" onclick="openSection('ai')" id="btnWhatCanIMake">🤖 Hvað get ég fengið mér?</button>
+          <button class="secondary" onclick="openSection('mealplan')" id="btnPlanWeek">📅 Skipuleggja vikuna</button>
+        </div>
+      </div>
+
+      <div class="card ai-card">
+        <h2 id="homeAiTitle">Tillögur úr því sem er til</h2>
+        <p class="muted small" id="homeAiSub">Appið les úr búri + réttasafni og stingur upp á fljótlegum hlutum.</p>
+        <div class="spacer"></div>
+        <div id="homeSuggestions"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mealplan" class="section"><div class="card"><div class="between"><div><h2 id="mealTitle">Vikuplan</h2><p class="muted small" id="mealSub">Veldu vistaðan rétt eða skrifaðu inn nýjan. Þetta vistast local strax.</p></div><div class="row"><button class="secondary" onclick="copyThisWeekToLastWeek()" id="saveWeekBtn">Vista sem síðustu viku</button><button class="secondary" onclick="loadLastWeek()" id="loadWeekBtn">Afrita síðustu viku</button></div></div><div class="spacer"></div><div id="days" class="days"></div></div></section>
+  <section id="recipes" class="section"><div class="card"><h2 id="recipesTitle">Réttasafn</h2><p class="muted small" id="recipesSub">Þetta er reusable grunnurinn fyrir vikuplan, AI tillögur og lazy mode.</p><div class="spacer"></div><div class="toolbar"><input id="recipeName" list="recipeSuggestions" placeholder="Réttur" /><input id="recipeMinutes" type="number" placeholder="mín" /><select id="recipeTag"><option value="fljótlegt">fljótlegt</option><option value="snarl">snarl</option><option value="kvöldmatur">kvöldmatur</option><option value="krakkavænt">krakkavænt</option></select><button class="primary" onclick="addRecipe()">Bæta</button></div><div class="spacer"></div><div id="recipeList"></div></div></section>
+  <section id="pantry" class="section"><div class="card"><h2 id="pantryTitle">Til heima</h2><p class="muted small" id="pantrySub">Hér skráirðu hvað er til. Innkaupalistinn dregur þetta sjálfkrafa frá.</p><div class="spacer"></div><div class="toolbar"><input id="pName" list="ingredientSuggestions" placeholder="Hráefni" oninput="applySuggestedUnit('pName','pUnit')" /><input id="pAmount" type="number" step="0.1" placeholder="Magn" /><input id="pUnit" placeholder="Eining" value="stk" /><button class="primary" onclick="addPantry()">Bæta</button></div><div class="spacer"></div><div id="pantryList"></div></div></section>
+  <section id="shopping" class="section"><div class="card"><div class="between"><div><h2 id="shoppingTitle">Innkaupalisti</h2><p class="muted small" id="shoppingSub">Búið til út frá vikuplaninu og því sem er til heima.</p></div><div class="row"><button class="secondary" onclick="copyShoppingText()" id="copyBtn">Afrita</button><button class="accent" onclick="shareList()" id="shareBtn">Deila</button></div></div><div class="spacer"></div><div id="shoppingList"></div></div></section>
+  <section id="ai" class="section"><div class="grid"><div class="card ai-card"><div class="between"><div><h2 id="aiTitle">Lazy mode + AI</h2><p class="muted small" id="aiSub">Tvær hugsanir: snarl eða fljótlegt. Þetta les úr pantry + recipes.</p></div><div class="segment"><button id="modeSnack" class="active" onclick="setAiMode('snack')">🍿 <span id="segSnack">Snarl</span></button><button id="modeQuick" onclick="setAiMode('quick')">⚡ <span id="segQuick">Fljótlegt</span></button></div></div><div class="spacer"></div><div id="aiList"></div></div></div></section>
+
+  <datalist id="ingredientSuggestions"></datalist>
+  <datalist id="recipeSuggestions"></datalist>
+</div>
+
+<div class="nav">
+  <button class="active" data-section="home">🏠 <span id="navHome">Heim</span></button>
+  <button data-section="mealplan">📅 <span id="navPlan">Vika</span></button>
+  <button data-section="recipes">🍳 <span id="navRecipes">Réttir</span></button>
+  <button data-section="pantry">🥫 <span id="navPantry">Búr</span></button>
+  <button data-section="shopping">🛒 <span id="navShopping">Listi</span></button>
+  <button data-section="ai">🤖 <span id="navAi">AI</span></button>
+</div>
+
+<script>
+const DAYS=["Mánudagur","Þriðjudagur","Miðvikudagur","Fimmtudagur","Föstudagur","Laugardagur","Sunnudagur"];
+const translations={is:{heroTitle:"Hvað er í matinn?",heroSub:"Warm, pabbaleg local-first prótótýpa með hybrid hugsun.",langBtn:"English",chip1:"📅 Vikuplan",chip2:"🥫 Til heima",chip3:"🛒 Innkaupalisti",chip4:"🤖 Lazy mode + AI tillögur",homeGreeting:"Sæll Gummi 👋",homePrompt:"Hvað á að vera í matinn — eða bara hvað á að fá sér?",kpi1label:"Réttir í viku",kpi2label:"Til heima",kpi3label:"Á lista",kpi4label:"Vistaðir réttir",btnWhatCanIMake:"🤖 Hvað get ég fengið mér?",btnPlanWeek:"📅 Skipuleggja vikuna",homeAiTitle:"Tillögur úr því sem er til",homeAiSub:"Appið les úr búri + réttasafni og stingur upp á fljótlegum hlutum.",mealTitle:"Vikuplan",mealSub:"Veldu vistaðan rétt eða skrifaðu inn nýjan. Þetta vistast local strax.",saveWeekBtn:"Vista sem síðustu viku",loadWeekBtn:"Afrita síðustu viku",recipesTitle:"Réttasafn",recipesSub:"Þetta er reusable grunnurinn fyrir vikuplan, AI tillögur og lazy mode.",pantryTitle:"Til heima",pantrySub:"Hér skráirðu hvað er til. Innkaupalistinn dregur þetta sjálfkrafa frá.",shoppingTitle:"Innkaupalisti",shoppingSub:"Búið til út frá vikuplaninu og því sem er til heima.",copyBtn:"Afrita",shareBtn:"Deila",aiTitle:"Lazy mode + AI",aiSub:"Tvær hugsanir: snarl eða fljótlegt. Þetta les úr pantry + recipes.",segSnack:"Snarl",segQuick:"Fljótlegt",navHome:"Heim",navPlan:"Vika",navRecipes:"Réttir",navPantry:"Búr",navShopping:"Listi",navAi:"AI",syncStatus:"🟢 Local first · offline ready"},
+en:{heroTitle:"What's for dinner?",heroSub:"Warm, dad-style local-first prototype with hybrid thinking.",langBtn:"Íslenska",chip1:"📅 Meal plan",chip2:"🥫 Pantry",chip3:"🛒 Shopping list",chip4:"🤖 Lazy mode + AI ideas",homeGreeting:"Hi Gummi 👋",homePrompt:"What should we have for dinner — or just grab quickly?",kpi1label:"Meals this week",kpi2label:"In pantry",kpi3label:"On list",kpi4label:"Saved recipes",btnWhatCanIMake:"🤖 What can I make?",btnPlanWeek:"📅 Plan the week",homeAiTitle:"Ideas from what you have",homeAiSub:"The app reads pantry + recipes and suggests quick options.",mealTitle:"Meal plan",mealSub:"Pick a saved recipe or type in a new one. Saved locally instantly.",saveWeekBtn:"Save as last week",loadWeekBtn:"Copy last week",recipesTitle:"Recipe library",recipesSub:"This reusable layer powers meal plan, AI ideas and lazy mode.",pantryTitle:"Pantry",pantrySub:"Track what you have. The shopping list subtracts it automatically.",shoppingTitle:"Shopping list",shoppingSub:"Generated from the meal plan and what you already have.",copyBtn:"Copy",shareBtn:"Share",aiTitle:"Lazy mode + AI",aiSub:"Two moods: snack or quick meal. Reads pantry + recipes.",segSnack:"Snack",segQuick:"Quick",navHome:"Home",navPlan:"Week",navRecipes:"Recipes",navPantry:"Pantry",navShopping:"List",navAi:"AI",syncStatus:"🟢 Local first · offline ready"}};
+const defaultState={lang:"is",aiMode:"snack",recipes:[{id:1,name:"Tacos",minutes:15,tags:["fljótlegt","kvöldmatur"],ingredients:[{name:"Nautahakk",amount:500,unit:"g"},{name:"Laukur",amount:1,unit:"stk"},{name:"Taco skeljar",amount:1,unit:"pk"},{name:"Rifinn ostur",amount:1,unit:"pk"}]},{id:2,name:"Egg á brauði",minutes:5,tags:["fljótlegt","snarl"],ingredients:[{name:"Egg",amount:2,unit:"stk"},{name:"Brauð",amount:2,unit:"sneiðar"},{name:"Smjör",amount:1,unit:"matsk"}]},{id:3,name:"Samloka",minutes:3,tags:["snarl","fljótlegt"],ingredients:[{name:"Brauð",amount:2,unit:"sneiðar"},{name:"Ostur",amount:2,unit:"sneiðar"},{name:"Skinka",amount:2,unit:"sneiðar"}]},{id:4,name:"Kjúklingapasta",minutes:20,tags:["kvöldmatur","krakkavænt"],ingredients:[{name:"Kjúklingabringur",amount:2,unit:"stk"},{name:"Laukur",amount:1,unit:"stk"},{name:"Pasta",amount:1,unit:"pk"},{name:"Rjómi",amount:500,unit:"ml"}]}],pantry:[{id:11,name:"Egg",amount:6,unit:"stk"},{id:12,name:"Brauð",amount:1,unit:"pk"},{id:13,name:"Laukur",amount:2,unit:"stk"},{id:14,name:"Rifinn ostur",amount:1,unit:"pk"},{id:15,name:"Smjör",amount:1,unit:"stk"},{id:16,name:"Pasta",amount:1,unit:"pk"},{id:17,name:"Kjúklingabringur",amount:2,unit:"stk"}],mealPlan:{"Mánudagur":"Tacos","Þriðjudagur":"Kjúklingapasta","Miðvikudagur":"","Fimmtudagur":"","Föstudagur":"","Laugardagur":"","Sunnudagur":""},lastWeekMeals:{}};
+let state=JSON.parse(localStorage.getItem("hvad-er-i-matinn-pwa")||"null")||defaultState;
+function save(){localStorage.setItem("hvad-er-i-matinn-pwa",JSON.stringify(state))}
+function translateUI(){Object.keys(translations[state.lang]).forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=translations[state.lang][id]});document.documentElement.lang=state.lang}
+function toggleLanguage(){state.lang=state.lang==="is"?"en":"is";renderAll()}
+function openSection(name){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(name).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.section===name))}
+document.querySelectorAll(".nav button").forEach(btn=>btn.addEventListener("click",()=>openSection(btn.dataset.section)));
+function ingredientMemory(){const map={};[...state.pantry,...state.recipes.flatMap(r=>r.ingredients)].forEach(i=>{const k=i.name.toLowerCase();if(!map[k])map[k]={name:i.name,unit:i.unit,count:0};map[k].count+=1});return Object.values(map).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,"is"))}
+function renderSuggestions(){document.getElementById("ingredientSuggestions").innerHTML=ingredientMemory().map(i=>`<option value="${escapeHtml(i.name)}"></option>`).join("");document.getElementById("recipeSuggestions").innerHTML=state.recipes.map(r=>`<option value="${escapeHtml(r.name)}"></option>`).join("")}
+function applySuggestedUnit(nameId,unitId){const name=document.getElementById(nameId).value.trim().toLowerCase();const found=ingredientMemory().find(i=>i.name.toLowerCase()===name);if(found)document.getElementById(unitId).value=found.unit}
+function renderMealPlan(){const box=document.getElementById("days");box.innerHTML="";DAYS.forEach(day=>{const value=state.mealPlan[day]||"";const recipe=state.recipes.find(r=>r.name===value);box.innerHTML+=`<div class="card"><div class="between"><h3>${escapeHtml(day)}</h3>${value?`<span class="pill">${recipe?recipe.minutes+" mín":""}</span>`:""}</div><div class="spacer"></div><select onchange="setMeal('${escapeJs(day)}', this.value)"><option value="">—</option>${state.recipes.map(r=>`<option value="${escapeHtml(r.name)}" ${r.name===value?'selected':''}>${escapeHtml(r.name)}</option>`).join("")}</select>${recipe?`<div class="recipe-tags">${recipe.tags.map(tag=>`<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div><div class="spacer"></div>${recipe.ingredients.map(i=>`<div class="list-item small"><span>${escapeHtml(i.name)}</span><strong>${fmt(i.amount)} ${escapeHtml(i.unit)}</strong></div>`).join("")}`:`<div class="spacer"></div><div class="muted small">${state.lang==='is'?'Enginn réttur valinn.':'No meal selected.'}</div>`}</div>`})}
+function setMeal(day,value){state.mealPlan[day]=value;renderAll()}
+function addRecipe(){const name=document.getElementById("recipeName").value.trim();const minutes=Number(document.getElementById("recipeMinutes").value||10);const tag=document.getElementById("recipeTag").value;if(!name)return;if(state.recipes.some(r=>r.name.toLowerCase()===name.toLowerCase()))return;const starterIngredients=tag==="snarl"?[{name:"Brauð",amount:2,unit:"sneiðar"}]:[{name:"Laukur",amount:1,unit:"stk"}];state.recipes.push({id:Date.now(),name,minutes,tags:[tag],ingredients:starterIngredients});document.getElementById("recipeName").value="";document.getElementById("recipeMinutes").value="";renderAll()}
+function renderRecipes(){const el=document.getElementById("recipeList");el.innerHTML=state.recipes.map((r,idx)=>{const pantryMatch=recipeMatch(r);return `<div class="card" style="margin-bottom:10px"><div class="between"><div><h3>${escapeHtml(r.name)}</h3><div class="muted small">${r.minutes} mín · ${pantryMatch.ready?(state.lang==='is'?'Áttu allt':'You have everything'):(state.lang==='is'?'Vantar eitthvað':'Missing some items')}</div><div class="recipe-tags">${r.tags.map(tag=>`<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div></div><div class="row"><button class="secondary" onclick="pickRecipe('${escapeJs(r.name)}')">${state.lang==='is'?'Velja':'Use'}</button><button class="danger" onclick="deleteRecipe(${idx})">${state.lang==='is'?'Eyða':'Delete'}</button></div></div><div class="spacer"></div>${r.ingredients.map(i=>`<div class="list-item"><span>${escapeHtml(i.name)}</span><strong>${fmt(i.amount)} ${escapeHtml(i.unit)}</strong></div>`).join("")}</div>`}).join("")}
+function pickRecipe(name){openSection('mealplan');const emptyDay=DAYS.find(d=>!state.mealPlan[d]);if(emptyDay){state.mealPlan[emptyDay]=name;renderAll()}else{alert(state.lang==='is'?'Veldu dag í vikuplaninu til að skipta út rétti.':'Pick a day in the meal plan to replace.')}}
+function deleteRecipe(idx){const removed=state.recipes[idx].name;state.recipes.splice(idx,1);DAYS.forEach(day=>{if(state.mealPlan[day]===removed)state.mealPlan[day]=""});renderAll()}
+function addPantry(){const name=document.getElementById("pName").value.trim();const amount=Number(document.getElementById("pAmount").value);const unit=document.getElementById("pUnit").value.trim()||"stk";if(!name||!amount)return;state.pantry.push({id:Date.now(),name,amount,unit});document.getElementById("pName").value="";document.getElementById("pAmount").value="";document.getElementById("pUnit").value="stk";renderAll()}
+function renderPantry(){const el=document.getElementById("pantryList");if(!state.pantry.length){el.innerHTML=`<div class="muted">${state.lang==='is'?'Ekkert skráð í búri enn.':'Nothing in pantry yet.'}</div>`;return}el.innerHTML=state.pantry.map((i,idx)=>`<div class="list-item"><span>${escapeHtml(i.name)}</span><div class="row"><strong>${fmt(i.amount)} ${escapeHtml(i.unit)}</strong><button class="danger" onclick="deletePantry(${idx})">${state.lang==='is'?'Eyða':'Delete'}</button></div></div>`).join("")}
+function deletePantry(idx){state.pantry.splice(idx,1);renderAll()}
+function selectedRecipes(){return DAYS.map(day=>state.recipes.find(r=>r.name===state.mealPlan[day])).filter(Boolean)}
+function weeklySummary(){const map={};selectedRecipes().forEach(r=>r.ingredients.forEach(i=>{const key=i.name.toLowerCase()+"__"+i.unit;if(!map[key])map[key]={name:i.name,amount:0,unit:i.unit};map[key].amount+=Number(i.amount||0)}));return Object.values(map).sort((a,b)=>a.name.localeCompare(b.name,"is"))}
+function pantryMap(){const map={};state.pantry.forEach(i=>{const key=i.name.toLowerCase()+"__"+i.unit;if(!map[key])map[key]=0;map[key]+=Number(i.amount||0)});return map}
+function shoppingList(){const pMap=pantryMap();return weeklySummary().map(i=>{const key=i.name.toLowerCase()+"__"+i.unit;const have=pMap[key]||0;return {name:i.name,unit:i.unit,amount:Math.max(i.amount-have,0)}}).filter(i=>i.amount>0)}
+function renderShopping(){const el=document.getElementById("shoppingList");const items=shoppingList();if(!items.length){el.innerHTML=`<div class="list-item"><span>${state.lang==='is'?'Ekkert vantar miðað við þessa viku.':'Nothing missing for this week.'}</span><span class="pill">✅</span></div>`;return}el.innerHTML=items.map(i=>`<div class="list-item"><span>${escapeHtml(i.name)}</span><strong>${fmt(i.amount)} ${escapeHtml(i.unit)}</strong></div>`).join("")}
+function shoppingText(){const items=shoppingList();let text=state.lang==='is'?"Innkaupalisti\n\n":"Shopping list\n\n";if(!items.length)return text+(state.lang==='is'?"Ekkert vantar.":"Nothing missing.");items.forEach(i=>text+=`- ${i.name} ${fmt(i.amount)} ${i.unit}\n`);return text}
+function copyShoppingText(){navigator.clipboard.writeText(shoppingText()).then(()=>alert(state.lang==='is'?'Listi afritaður.':'List copied.'))}
+function shareList(){const text=shoppingText();if(navigator.share)navigator.share({title:"Hvað er í matinn?",text});else alert(text)}
+function recipeMatch(recipe){const pMap=pantryMap();let missing=[];recipe.ingredients.forEach(i=>{const key=i.name.toLowerCase()+"__"+i.unit;if((pMap[key]||0)<i.amount)missing.push(i.name)});return {ready:missing.length===0,missing}}
+function aiSuggestions(){return state.recipes.filter(r=>state.aiMode==='snack'?(r.tags.includes('snarl')||r.minutes<=5):r.minutes<=10).map(r=>{const match=recipeMatch(r);return {...r,score:r.ingredients.length-match.missing.length,missing:match.missing}}).sort((a,b)=>b.score-a.score||a.minutes-b.minutes).slice(0,4)}
+function renderSuggestionCard(item){const missingText=item.missing.length?(state.lang==='is'?`Vantar: ${item.missing.join(", ")}`:`Missing: ${item.missing.join(", ")}`):(state.lang==='is'?"Áttu allt":"You have everything");return `<div class="list-item"><div><strong>${escapeHtml(item.name)}</strong><div class="muted small">${item.minutes} mín · ${missingText}</div></div><div class="row"><button class="secondary" onclick="pickRecipe('${escapeJs(item.name)}')">${state.lang==='is'?'Setja í viku':'Add to plan'}</button></div></div>`}
+function renderAi(){const items=aiSuggestions();document.getElementById("homeSuggestions").innerHTML=items.slice(0,3).map(renderSuggestionCard).join("");document.getElementById("aiList").innerHTML=items.map(renderSuggestionCard).join("");document.getElementById("modeSnack").classList.toggle("active",state.aiMode==="snack");document.getElementById("modeQuick").classList.toggle("active",state.aiMode==="quick")}
+function setAiMode(mode){state.aiMode=mode;renderAi();save()}
+function copyThisWeekToLastWeek(){state.lastWeekMeals=JSON.parse(JSON.stringify(state.mealPlan));save();alert(state.lang==='is'?'Þessi vika vistuð.':'This week saved.')}
+function loadLastWeek(){if(!Object.keys(state.lastWeekMeals||{}).length){alert(state.lang==='is'?'Engin síðasta vika vistuð enn.':'No last week saved yet.');return}state.mealPlan=JSON.parse(JSON.stringify(state.lastWeekMeals));renderAll()}
+function renderKpis(){document.getElementById("kpiMeals").textContent=selectedRecipes().length;document.getElementById("kpiPantry").textContent=state.pantry.length;document.getElementById("kpiShop").textContent=shoppingList().length;document.getElementById("kpiRecipes").textContent=state.recipes.length}
+function renderAll(){save();translateUI();renderSuggestions();renderMealPlan();renderRecipes();renderPantry();renderShopping();renderAi();renderKpis()}
+function fmt(n){const num=Number(n);return Number.isInteger(num)?String(num):num.toFixed(1).replace(/\.0$/,'')}
+function escapeHtml(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
+function escapeJs(s){return String(s).replaceAll("\\","\\\\").replaceAll("'","\\'")}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}))}
+renderAll();
+</script>
+</body>
+</html>
